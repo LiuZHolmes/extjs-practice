@@ -13,11 +13,22 @@
     <script>
       Ext.onReady(function() {
         Ext.ns('com.ita')
-        com.ita.SearchField = Ext.extend(Ext.form.TextField, {
+        com.ita.SearchField = Ext.extend(Ext.Container, {
           width: '100%',
-					cls: 'search',
+          layout: 'column',
           initComponent: function() {
             com.ita.SearchField.superclass.initComponent.call(this)
+            this.add([
+              {
+                xtype: 'textfield',
+                cls: 'search',
+                columnWidth: 0.999
+              },
+              {
+                xtype: 'button',
+                iconCls: 'searchButton'
+              }
+            ])
           }
         })
         Ext.reg('com.ita.SearchField', com.ita.SearchField)
@@ -29,7 +40,7 @@
               xtype: 'box',
               height: 53,
               autoWidth: true,
-							cls: 'logo',
+              cls: 'logo',
               autoEl: {
                 tag: 'img',
                 src: './images/bing.png'
@@ -40,35 +51,23 @@
               activeTab: 0,
               bodyBoder: false,
               border: true,
-							width: 500,
+              width: 500,
               cls: 'tab',
               items: [
                 {
                   title: '国内版',
-									layout: 'column',
                   items: [
                     {
-                      xtype: 'com.ita.SearchField',
-											columnWidth: 0.999
-                    },
-										{
-											xtype: 'button',
-											iconCls: 'searchButton'
-										}
+                      xtype: 'com.ita.SearchField'
+                    }
                   ]
                 },
                 {
                   title: '国际版',
-									layout: 'column',
                   items: [
                     {
-                      xtype: 'com.ita.SearchField',
-											columnWidth: 0.999
-                    },
-										{
-											xtype: 'button',
-											iconCls: 'searchButton'
-										}
+                      xtype: 'com.ita.SearchField'
+                    }
                   ]
                 }
               ]
@@ -78,19 +77,19 @@
       })
     </script>
     <style>
-			.logo {
-				padding: 10px;
-			}
+      .logo {
+        padding: 10px;
+      }
       .tab {
         background-color: grey;
       }
-			.search {
-				border: 0 !important;
-			}
-			.searchButton {
-				background: url(./images/searchButton.jpg) left center no-repeat;
-				border: 0 !important;
-			}
+      .search {
+        border: 0;
+      }
+      .searchButton {
+        background: url(./images/searchButton.jpg) left center no-repeat;
+        border: 0;
+      }
     </style>
   </head>
   <body>
