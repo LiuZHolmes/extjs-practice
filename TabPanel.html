@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>TabPanel</title>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../resources/css/ext-all.css"
+		/>
+		<!-- LIBS -->
+		<script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+		<!-- ENDLIBS -->
+		<script type="text/javascript" src="../ext-all.js"></script>
+		<script>
+			Ext.onReady(function() {
+				var tabPanel = new Ext.TabPanel({
+					title: 'Tom and Jerry',
+					renderTo: document.body,
+					height: 150,
+					header: true,
+					activeTab: 1,
+					tabPosition: 'top',
+					buttons: [
+						{
+							text: 'Click Me!'
+						}
+					],
+					bbar: [{ text: 'Option' }],
+					items: [
+						{
+							title: 'Tom',
+							html: 'Tom Cat'
+						},
+						{
+							title: 'Jerry',
+							html: 'Jerry Mouse'
+						}
+					]
+				})
+			})
+		</script>
+	</head>
+	<body></body>
+</html>

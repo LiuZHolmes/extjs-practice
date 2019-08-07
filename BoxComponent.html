@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>BoxComponent</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../resources/css/ext-all.css"
+    />
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+      Ext.onReady(function() {
+        var boxCmp = new Ext.BoxComponent({
+          renderTo: 'test',
+          style: 'background-color: blue; position:absolute;',
+          pageX: 100,
+          pageY: 50,
+          width: 200,
+          height: 150,
+          hidden: false
+        })
+        boxCmp.addEvents('hide')
+        boxCmp.addListener('hide', function() {
+          boxCmp.hide()
+        })
+        Ext.get('hide').on('click', function() {
+          boxCmp.fireEvent('hide')
+        })
+      })
+    </script>
+  </head>
+  <body>
+	<div id="test"></div>
+	<button id="hide">Hide</button>
+  </body>
+</html>

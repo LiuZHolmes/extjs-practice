@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Extend and Plugin</title>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../resources/css/ext-all.css"
+		/>
+		<!-- LIBS -->
+		<script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+		<!-- ENDLIBS -->
+		<script type="text/javascript" src="../ext-all.js"></script>
+		<script>
+			Ext.onReady(function() {
+				Ext.ns('com', 'com.ita')
+				ColorPlugin = function() {
+					this.init = function(cmp) {
+						cmp.bodyStyle = cmp.html.includes('plugin')
+							? 'color:red'
+							: 'color:black'
+					}
+				}
+				Ext.preg('com.ita.ColorPlugin', ColorPlugin)
+
+				MyPanel = Ext.extend(Ext.Panel, {
+					initComponent: function(config) {
+						Ext.applyIf(this, config)
+						MyPanel.superclass.initComponent.call(this)
+					},
+					plugins: [{ ptype: 'com.ita.ColorPlugin' }]
+				})
+				var myPanel = new MyPanel({
+					renderTo: 'test',
+					title: 'Extend and Plugin',
+					html:
+						'This is extend and plugin example, the plugin will turn the font color into red.',
+					height: 150
+				})
+				myPanel.render()
+				var myPanel2 = new MyPanel({
+					renderTo: 'test',
+					title: 'Extend and Plugin',
+					html: 'This is extend example',
+					height: 150
+				})
+				myPanel2.render()
+			})
+		</script>
+	</head>
+	<body>
+		<div id="test"></div>
+	</body>
+</html>

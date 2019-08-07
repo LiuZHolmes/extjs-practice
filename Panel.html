@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>Panel</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../resources/css/ext-all.css"
+    />
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+      Ext.onReady(function() {
+        var panel = new Ext.Panel({
+          renderTo: 'test',
+          title: 'Greeting',
+          floating: true,
+		  shadow: true,
+		  buttons: ['Click Me1','Click Me2'],
+          draggable: {
+            //      Config option of Ext.Panel.DD class.
+            //      It's a floating Panel, so do not show a placeholder proxy in the original position.
+            insertProxy: false,
+
+            //      Called for each mousemove event while dragging the DD object.
+            onDrag: function(e) {
+              //          Record the x,y position of the drag proxy so that we can
+              //          position the Panel at end of drag.
+              var pel = this.proxy.getEl()
+              this.x = pel.getLeft(true)
+              this.y = pel.getTop(true)
+
+              //          Keep the Shadow aligned if there is one.
+              var s = this.panel.getEl().shadow
+              if (s) {
+                s.realign(this.x, this.y, pel.getWidth(), pel.getHeight())
+              }
+            },
+
+            //      Called on the mouseup event.
+            endDrag: function(e) {
+              this.panel.setPosition(this.x, this.y)
+            }
+          },
+          collapsible: true,
+          html: 'Hello World!',
+          pageX: 100,
+          pageY: 50,
+          width: 200,
+          height: 150,
+          items: [
+            {
+              layout: 'column',
+              defaults: {
+                // implicitly create Container by specifying xtype
+                xtype: 'container',
+                autoEl: 'div', // This is the default.
+                layout: 'form',
+                columnWidth: 0.25,
+                style: {
+                  padding: '10px'
+                }
+              },
+              items: [
+                {
+                  xtype: 'box',
+                  renderTo: 'test',
+                  style: 'background-color: blue;',
+                  width: 200,
+                  height: 150
+                },
+                {
+                  xtype: 'box',
+                  renderTo: 'test',
+                  style: 'background-color: red;',
+                  width: 200,
+                  height: 150
+                },
+                {
+                  xtype: 'box',
+                  renderTo: 'test',
+                  style: 'background-color: black;',
+                  width: 200,
+                  height: 150
+                },
+                {
+                  xtype: 'box',
+                  renderTo: 'test',
+                  style: 'background-color: yellow;',
+                  width: 200,
+                  height: 150
+                }
+              ]
+            }
+          ]
+        })
+        panel.render()
+      })
+    </script>
+  </head>
+  <body>
+    <div id="test"></div>
+  </body>
+</html>

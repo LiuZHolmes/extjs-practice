@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>Container</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../resources/css/ext-all.css"
+    />
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+      Ext.onReady(function() {
+        var cntr = new Ext.Container({
+          renderTo: 'test',
+          layout: 'column',
+          defaults: {
+            // implicitly create Container by specifying xtype
+            xtype: 'container',
+            autoEl: 'div', // This is the default.
+            layout: 'form',
+            columnWidth: 0.25,
+            style: {
+              padding: '10px'
+            }
+          },
+          items: [
+            {
+              xtype: 'box',
+              renderTo: 'test',
+              style: 'background-color: blue;',
+              width: 200,
+              height: 150
+            },
+            {
+              xtype: 'box',
+              renderTo: 'test',
+              style: 'background-color: red;',
+              width: 200,
+              height: 150
+            },
+            {
+              xtype: 'box',
+              renderTo: 'test',
+              style: 'background-color: black;',
+              width: 200,
+              height: 150
+            },
+            {
+              xtype: 'box',
+              renderTo: 'test',
+              style: 'background-color: yellow;',
+              width: 200,
+              height: 150
+            }
+          ]
+        })
+        cntr.render()
+      })
+    </script>
+  </head>
+  <body>
+    <div id="test"></div>
+  </body>
+</html>

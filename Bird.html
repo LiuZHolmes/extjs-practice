@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<title>Bird</title>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="../resources/css/ext-all.css"
+		/>
+		<!-- LIBS -->
+		<script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+		<!-- ENDLIBS -->
+		<script type="text/javascript" src="../ext-all.js"></script>
+		<script>
+			Ext.onReady(function() {
+				Bird = Ext.extend(Ext.util.Observable, {
+					constructor: function(config) {
+						this.name = config.name
+						this.addEvents('fly', 'sing')
+						Bird.superclass.constructor.call(this, config)
+					},
+					info: function(action) {
+						return this.name + ' is ' + action + 'ing'
+					}
+				})
+				var bird = new Bird({ name: 'eagle' })
+				bird.on('fly', function() {
+					Ext.MessageBox.alert('Bird', bird.info('fly') + ' to the moon.')
+				})
+				bird.on('sing', function() {
+					Ext.MessageBox.alert('Bird', bird.info('sing'))
+				})
+				var container = new Ext.Container({
+					renderTo: 'test',
+					layout: 'table',
+					layoutConfig: {
+						columns: 2
+					},
+					items: [
+						{
+							xtype: 'button',
+							width: 80,
+							height: 40,
+							text: "Fly",
+							id: 'fly'
+						},
+						{
+							xtype: 'button',
+							width: 80,
+							height: 40,
+							text: "Sing",
+							id: 'sing'
+						}
+					]
+				})
+				Ext.get('fly').on('click', function() {
+					bird.fireEvent('fly')
+				})
+				Ext.get('sing').on('click', function() {
+					bird.fireEvent('sing')
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<div id="test"></div>
+	</body>
+</html>

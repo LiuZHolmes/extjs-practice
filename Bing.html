@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Bing</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../resources/css/ext-all.css"
+    />
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+      Ext.onReady(function() {
+        Ext.ns('com.ita')
+        com.ita.SearchField = Ext.extend(Ext.form.TextField, {
+          width: '100%',
+					cls: 'search',
+          initComponent: function() {
+            com.ita.SearchField.superclass.initComponent.call(this)
+          }
+        })
+        Ext.reg('com.ita.SearchField', com.ita.SearchField)
+        var container = new Ext.Container({
+          renderTo: 'bing',
+          layout: 'hbox',
+          items: [
+            {
+              xtype: 'box',
+              height: 53,
+              autoWidth: true,
+							cls: 'logo',
+              autoEl: {
+                tag: 'img',
+                src: './images/bing.png'
+              }
+            },
+            {
+              xtype: 'tabpanel',
+              activeTab: 0,
+              bodyBoder: false,
+              border: true,
+							width: 500,
+              cls: 'tab',
+              items: [
+                {
+                  title: '国内版',
+									layout: 'column',
+                  items: [
+                    {
+                      xtype: 'com.ita.SearchField',
+											columnWidth: 0.999
+                    },
+										{
+											xtype: 'button',
+											iconCls: 'searchButton'
+										}
+                  ]
+                },
+                {
+                  title: '国际版',
+									layout: 'column',
+                  items: [
+                    {
+                      xtype: 'com.ita.SearchField',
+											columnWidth: 0.999
+                    },
+										{
+											xtype: 'button',
+											iconCls: 'searchButton'
+										}
+                  ]
+                }
+              ]
+            }
+          ]
+        })
+      })
+    </script>
+    <style>
+			.logo {
+				padding: 10px;
+			}
+      .tab {
+        background-color: grey;
+      }
+			.search {
+				border: 0 !important;
+			}
+			.searchButton {
+				background: url(./images/searchButton.jpg) left center no-repeat;
+				border: 0 !important;
+			}
+    </style>
+  </head>
+  <body>
+    <div id="bing"></div>
+  </body>
+</html>
