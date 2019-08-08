@@ -29,7 +29,10 @@
                         let answer = Ext.getCmp('card-0').getForm().getValues().answer
                         result += `Q1: ${answer ? answer : '未完成'}\n`
                         answer = Ext.getCmp('card-1').getForm().getValues().answer
-                        result += `Q2: ${answer ? answer.join('\n') : '未完成'}\n`
+                        if (typeof answer === 'object')
+                            result += `Q2: ${answer.join('\n')}\n`
+                        else
+                            result += `Q2: ${answer ? answer : '未完成'}\n`
                         Ext.getCmp('result').setValue(result)
                         wizard.setActiveItem(2)
                         next.hide()
@@ -43,10 +46,9 @@
                     }
                 }
             }
-            var viewport = new Ext.Viewport({
-                layout: 'border',
+            var panel = new Ext.Panel({
+                layout: 'fit',
                 items: [{
-                    region: 'west',
                     id: 'wizard',
                     width: 500,
                     title: '垃圾分类问卷调查',
@@ -78,6 +80,7 @@
                     items: [{
                         id: 'card-0',
                         xtype: 'form',
+                        layout: 'vbox',
                         items: [{
                             xtype: 'label',
                             text: 'Q1: 番茄酱属于以下哪种垃圾？（单选）'
@@ -95,8 +98,10 @@
                     }, {
                         id: 'card-1',
                         xtype: 'form',
+                        layout: 'vbox',
                         items: [{
                             xtype: 'label',
+                            width: '100%',
                             text: 'Q2: 王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）'
                         }, {
                             xtype: 'checkboxgroup',
@@ -119,12 +124,17 @@
                             readOnly: true
                         }]
                     }]
-                }, {
-                    region: 'center',
-                    split: true,
-                    border: true
                 }]
             })
+            const win = new Ext.Window({
+                layout: 'fit',
+                width: 500,
+                height: 300,
+                closeAction: 'hide',
+                plain: true,
+                items: panel
+            })
+            win.show()
         })
     </script>
 </head>
