@@ -13,6 +13,7 @@
                 var wizard = Ext.getCmp('wizard').layout
                 var prev = Ext.getCmp('move-prev')
                 var next = Ext.getCmp('move-next')
+                var submit = Ext.getCmp('submit')
                 var activeId = wizard.activeItem.id
                 if (activeId === 'card-0') {
                     if (direction === 1) {
@@ -36,12 +37,14 @@
                         result += `Q2: ${answer}`
                         Ext.getCmp('result').setValue(result)
                         wizard.setActiveItem(2)
-                        next.setDisabled(true)
+                        next.hide()
+                        submit.show()
                     }
                 } else if (activeId === 'card-2') {
                     if (direction === -1) {
                         wizard.setActiveItem(1)
-                        next.setDisabled(false)
+                        next.show()
+                        submit.hide()
                     }
                 }
             }
@@ -67,6 +70,15 @@
                         id: 'move-next',
                         text: '下一步',
                         handler: navHandler.createDelegate(this, [1])
+                    }, {
+                        id: 'submit',
+                        text: '提交',
+                        hidden: true,
+                        listeners: {
+                            'click': function (btn, form) {
+                                Ext.Msg.alert('提醒', '恭喜完成！');
+                            }
+                        }
                     }],
                     items: [{
                         id: 'card-0',
@@ -109,14 +121,6 @@
                             id: 'result',
                             xtype: 'textarea',
                             readOnly: true
-                        }],
-                        buttons: [{
-                            text: 'Submit',
-                            listeners: {
-                                'click': function (btn, form) {
-                                    Ext.Msg.alert('提醒', '恭喜完成！');
-                                }
-                            }
                         }]
                     }]
                 }, {
