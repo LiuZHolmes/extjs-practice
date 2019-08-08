@@ -26,15 +26,10 @@
                         prev.setDisabled(true)
                     } else {
                         let result = ''
-                        let question = Ext.getCmp('question-1').items.items
-                        let answer = question.filter(x => x.checked)
-                        result += `Q1: ${answer.length > 0 ? answer[0].boxLabel : '未完成'}\n`
-                        question = Ext.getCmp('question-2').items.items
-                        answer = question.filter(x => x.checked)
-                        if (answer.length > 0) {
-                            answer = answer.map(x => x.boxLabel).join('\n')
-                        } else answer = '未完成'
-                        result += `Q2: ${answer}`
+                        let answer = Ext.getCmp('card-0').getForm().getValues().answer
+                        result += `Q1: ${answer ? answer : '未完成'}\n`
+                        answer = Ext.getCmp('card-1').getForm().getValues().answer
+                        result += `Q2: ${answer ? answer.join('\n') : '未完成'}\n`
                         Ext.getCmp('result').setValue(result)
                         wizard.setActiveItem(2)
                         next.hide()
@@ -76,13 +71,13 @@
                         hidden: true,
                         listeners: {
                             'click': function (btn, form) {
-                                Ext.Msg.alert('提醒', '恭喜完成！');
+                                Ext.Msg.alert('提醒', '恭喜完成！')
                             }
                         }
                     }],
                     items: [{
                         id: 'card-0',
-                        xtype: 'container',
+                        xtype: 'form',
                         items: [{
                             xtype: 'label',
                             text: 'Q1: 番茄酱属于以下哪种垃圾？（单选）'
@@ -91,14 +86,15 @@
                             id: 'question-1',
                             columns: 1,
                             items: [
-                                {boxLabel: '湿垃圾', name: 'answer-1', inputValue: 1},
-                                {boxLabel: '干垃圾', name: 'answer-1', inputValue: 2},
-                                {boxLabel: '有害垃圾', name: 'answer-1', inputValue: 3},
-                                {boxLabel: '可回收物', name: 'answer-1', inputValue: 4}
+                                {boxLabel: '湿垃圾', name: 'answer', inputValue: '湿垃圾'},
+                                {boxLabel: '干垃圾', name: 'answer', inputValue: '干垃圾'},
+                                {boxLabel: '有害垃圾', name: 'answer', inputValue: '有害垃圾'},
+                                {boxLabel: '可回收物', name: 'answer', inputValue: '可回收物'}
                             ]
                         }]
                     }, {
-                        id: 'card-1', xtype: 'container',
+                        id: 'card-1',
+                        xtype: 'form',
                         items: [{
                             xtype: 'label',
                             text: 'Q2: 王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）'
@@ -107,10 +103,10 @@
                             id: 'question-2',
                             columns: 1,
                             items: [
-                                {boxLabel: '把粑粑用废报纸包好带回家冲掉', name: 'answer-2', inputValue: 1},
-                                {boxLabel: '受污染的报纸按有害垃圾处理', name: 'answer-2', inputValue: 2},
-                                {boxLabel: '没受污染的报纸按可回收垃圾处理', name: 'answer-2', inputValue: 3},
-                                {boxLabel: '受污染的报纸湿水后当湿垃圾处理', name: 'answer-2', inputValue: 4}
+                                {boxLabel: '把粑粑用废报纸包好带回家冲掉', name: 'answer', inputValue: '把粑粑用废报纸包好带回家冲掉'},
+                                {boxLabel: '受污染的报纸按有害垃圾处理', name: 'answer', inputValue: '受污染的报纸按有害垃圾处理'},
+                                {boxLabel: '没受污染的报纸按可回收垃圾处理', name: 'answer', inputValue: '没受污染的报纸按可回收垃圾处理'},
+                                {boxLabel: '受污染的报纸湿水后当湿垃圾处理', name: 'answer', inputValue: '受污染的报纸湿水后当湿垃圾处理'}
                             ]
                         }]
                     }, {
