@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>08.layout</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="../ext-all-debug.js"></script>
+    <script type="text/javascript" src="../src/locale/ext-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        Ext.onReady(function () {
+            Ext.onReady(function () {
+                var viewport = new Ext.Viewport({
+                    layout: 'border',
+                    defaults: {
+                        collapsible: true,
+                        split: true, minSize: 80, maxSize: 200
+                    },
+                    items: [
+                        {
+                            region: 'north', html: 'north', height: 100
+                        },
+                        {
+                            region: 'south', html: 'south', height: 100
+                        },
+                        {
+                            region: 'west', html: 'west', width: 100
+                        },
+                        {
+                            region: 'east', html: 'east', width: 100
+                        },
+                        {region: 'center', html: 'center', collapsible: false}
+                    ]
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+</body>
+</html>

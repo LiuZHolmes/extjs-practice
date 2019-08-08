@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>08.layout</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="../ext-all-debug.js"></script>
+    <script type="text/javascript" src="../src/locale/ext-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        Ext.onReady(function () {
+            var navHandler = function (direction) {
+                var wizard = Ext.getCmp('wizard').layout
+                var prev = Ext.getCmp('move-prev')
+                var next = Ext.getCmp('move-next')
+                var activeId = wizard.activeItem.id
+                if (activeId === 'card-0') {
+                    if (direction === 1) {
+                        wizard.setActiveItem(1)
+                        prev.setDisabled(false)
+                    }
+                } else if (activeId === 'card-1') {
+                    if (direction === -1) {
+                        wizard.setActiveItem(0)
+                        prev.setDisabled(true)
+                    } else {
+                        wizard.setActiveItem(2)
+                        next.setDisabled(true)
+                    }
+                } else if (activeId === 'card-2') {
+                    if (direction === -1) {
+                        wizard.setActiveItem(1)
+                        next.setDisabled(false)
+                    }
+                }
+            }
+            var viewport = new Ext.Viewport({
+                layout: 'border',
+                items: [{
+                    region: 'west',
+                    id: 'wizard',
+                    width: 200,
+                    title: '某某向导',
+                    layout: 'card',
+                    activeItem: 0,
+                    bodyStyle: 'padding:15px',
+                    defaults: {
+                        border: false
+                    },
+                    bbar: [{
+                        id: 'move-prev',
+                        text: '上一步',
+                        handler: navHandler.createDelegate(this, [-1]),
+                        disabled: true
+                    }, '->', {
+                        id: 'move-next',
+                        text: '下一步',
+                        handler: navHandler.createDelegate(this, [1])
+                    }],
+                    items: [{
+                        id: 'card-0',
+                        html: '<h1>哈哈！<br />欢迎用咱的向导。</h1><p>第一步，一共三步</p>'
+                    }, {
+                        id: 'card-1',
+                        html: '<p>第二步，一共三步</p>'
+                    }, {
+                        id: 'card-2',
+                        html: '<h1>恭喜恭喜，完成了。</h1><p>第三步，一共三步，最后一步了。</p>'
+                    }]
+                }, {
+                    region: 'center',
+                    split: true,
+                    border: true
+                }]
+            })
+        })
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>08.layout</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css" />
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="../ext-all-debug.js"></script>
+    <script type="text/javascript" src="../src/locale/ext-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        Ext.onReady(function(){
+            var store = new Ext.data.SimpleStore({
+                fields: ['id', 'name', 'desc'],
+                data: [
+                    ['1', 'name1', 'desc1'],
+                    ['2', 'name2', 'desc2'],
+                    ['3', 'name3', 'desc3'],
+                    ['4', 'name4', 'desc4'],
+                    ['5', 'name5', 'desc5'],
+                    ['6', 'name6', 'desc6']
+                ]
+            });
+            var grid = new Ext.grid.GridPanel({
+                title: 'grid',
+                viewConfig: {forceFit: true},
+                store: store,
+                columns: [
+                    {header:'id', dataIndex: 'id'},
+                    {header:'name', dataIndex:'name'},
+                    {header:'description', dataIndex:'desc'}
+                ]
+            });
+
+            var win = new Ext.Window({
+                width: 400,
+                autoHeight: true,
+                layout: 'fit',
+                items: [grid]
+            });
+            win.show();
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>

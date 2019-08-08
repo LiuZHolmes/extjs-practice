@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>ComboBox</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script type="text/javascript">
+        Ext.onReady(function () {
+            var combox = new Ext.form.ComboBox({
+                id: 'province',
+                renderTo: 'test',
+                fieldLabel: 'Province',
+                emptyText: 'Choose/Input your Province',
+                mode: 'local',
+                store: new Ext.data.ArrayStore({
+                    id: 0,
+                    fields: ['id', 'province'],
+                    data: [[1, 'Guangdong'], [2, 'Hainan']]
+                }),
+                valueField: 'id',
+                displayField: 'province'
+            })
+            var combox2 = new Ext.form.ComboBox({
+                id: 'city',
+                renderTo: 'test2',
+                fieldLabel: 'City',
+                emptyText: 'Choose/Input your City',
+                mode: 'local',
+                store: new Ext.data.ArrayStore({
+                    id: 1,
+                    fields: ['id', 'city']
+                }),
+                valueField: 'id',
+                displayField: 'city'
+            })
+            combox.on('select', function (combo) {
+                if (combo.getValue() === 1) {
+                    const data = [[1, 'ZhuHai'], [2, 'Guangzhou']]
+                    combox2.store.loadData(data)
+                } else if (combo.getValue() === 2) {
+                    const data = [[1, 'Haikou'], [2, 'Sanya']]
+                    combox2.store.loadData(data)
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+<div id="test"></div>
+<div id="test2"></div>
+</body>
+</html>

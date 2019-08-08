@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>垃圾分类问卷调查</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="../ext-all-debug.js"></script>
+    <script type="text/javascript" src="../src/locale/ext-lang-zh_CN.js"></script>
+    <script type="text/javascript">
+        Ext.onReady(function () {
+            var navHandler = function (direction) {
+                var wizard = Ext.getCmp('wizard').layout
+                var prev = Ext.getCmp('move-prev')
+                var next = Ext.getCmp('move-next')
+                var activeId = wizard.activeItem.id
+                if (activeId === 'card-0') {
+                    if (direction === 1) {
+                        wizard.setActiveItem(1)
+                        prev.setDisabled(false)
+                    }
+                } else if (activeId === 'card-1') {
+                    if (direction === -1) {
+                        wizard.setActiveItem(0)
+                        prev.setDisabled(true)
+                    } else {
+                        let result = ''
+                        let question = Ext.getCmp('question-1').items.items
+                        let answer = question.filter(x => x.checked)
+                        result += `Q1: ${answer.length > 0 ? answer[0].boxLabel : '未完成'}\n`
+                        question = Ext.getCmp('question-2').items.items
+                        answer = question.filter(x => x.checked)
+                        if (answer.length > 0) {
+                            answer = answer.map(x => x.boxLabel).join('\n')
+                        } else answer = '未完成'
+                        result += `Q2: ${answer}`
+                        Ext.getCmp('result').setValue(result)
+                        wizard.setActiveItem(2)
+                        next.setDisabled(true)
+                    }
+                } else if (activeId === 'card-2') {
+                    if (direction === -1) {
+                        wizard.setActiveItem(1)
+                        next.setDisabled(false)
+                    }
+                }
+            }
+            var viewport = new Ext.Viewport({
+                layout: 'border',
+                items: [{
+                    region: 'west',
+                    id: 'wizard',
+                    width: 500,
+                    title: '垃圾分类问卷调查',
+                    layout: 'card',
+                    activeItem: 0,
+                    bodyStyle: 'padding:15px',
+                    defaults: {
+                        border: false
+                    },
+                    bbar: [{
+                        id: 'move-prev',
+                        text: '上一步',
+                        handler: navHandler.createDelegate(this, [-1]),
+                        disabled: true
+                    }, '->', {
+                        id: 'move-next',
+                        text: '下一步',
+                        handler: navHandler.createDelegate(this, [1])
+                    }],
+                    items: [{
+                        id: 'card-0',
+                        xtype: 'container',
+                        items: [{
+                            xtype: 'label',
+                            text: 'Q1: 番茄酱属于以下哪种垃圾？（单选）'
+                        }, {
+                            xtype: 'radiogroup',
+                            id: 'question-1',
+                            columns: 1,
+                            items: [
+                                {boxLabel: '湿垃圾', name: 'answer-1', inputValue: 1},
+                                {boxLabel: '干垃圾', name: 'answer-1', inputValue: 2},
+                                {boxLabel: '有害垃圾', name: 'answer-1', inputValue: 3},
+                                {boxLabel: '可回收物', name: 'answer-1', inputValue: 4}
+                            ]
+                        }]
+                    }, {
+                        id: 'card-1', xtype: 'container',
+                        items: [{
+                            xtype: 'label',
+                            text: 'Q2: 王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）'
+                        }, {
+                            xtype: 'checkboxgroup',
+                            id: 'question-2',
+                            columns: 1,
+                            items: [
+                                {boxLabel: '把粑粑用废报纸包好带回家冲掉', name: 'answer-2', inputValue: 1},
+                                {boxLabel: '受污染的报纸按有害垃圾处理', name: 'answer-2', inputValue: 2},
+                                {boxLabel: '没受污染的报纸按可回收垃圾处理', name: 'answer-2', inputValue: 3},
+                                {boxLabel: '受污染的报纸湿水后当湿垃圾处理', name: 'answer-2', inputValue: 4}
+                            ]
+                        }]
+                    }, {
+                        id: 'card-2',
+                        xtype: 'form',
+                        layout: 'fit',
+                        items: [{
+                            id: 'result',
+                            xtype: 'textarea',
+                            readOnly: true
+                        }],
+                        buttons: [{
+                            text: 'Submit',
+                            listeners: {
+                                'click': function (btn, form) {
+                                    Ext.Msg.alert('提醒', '恭喜完成！');
+                                }
+                            }
+                        }]
+                    }]
+                }, {
+                    region: 'center',
+                    split: true,
+                    border: true
+                }]
+            })
+        })
+    </script>
+</head>
+<body>
+</body>
+</html>

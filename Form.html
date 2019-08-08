@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Form</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+        Ext.onReady(function () {
+            var form = new Ext.form.FormPanel({
+                    id: 'testForm',
+                    renderTo: 'test',
+                    defaultType: 'textfield',
+                    labelAlign: 'center',
+                    title: 'Register',
+                    labelWidth: 50,
+                    frame: true,
+                    width: 500,
+                    draggable: true,
+                    items: [
+                        {
+                            xtype: 'fieldset',
+                            checkboxToggle: true,
+                            title: 'User Information',
+                            autoHeight: true,
+                            defaults: {width: 210},
+                            defaultType: 'textfield',
+                            collapsed: true,
+                            items: [{
+                                fieldLabel: 'First Name',
+                                name: 'first',
+                                allowBlank: false
+                            }, {
+                                fieldLabel: 'Last Name',
+                                name: 'last'
+                            }, {
+                                fieldLabel: 'Company',
+                                name: 'company'
+                            }, {
+                                fieldLabel: 'Email',
+                                name: 'email',
+                                vtype: 'email'
+                            }
+                            ]
+                        },
+                        {
+                            xtype: 'radiogroup',
+                            fieldLabel: 'Gender',
+                            columns: 1,
+                            items: [
+                                {boxLabel: 'Male',name: 'gender'},
+                                {boxLabel: 'Female',name: 'gender'}
+                            ]
+                        },
+                        {
+                            xtype: 'fieldset',
+                            title: 'Detail',
+                            collapsible: true,
+                            autoHeight: true,
+                            defaults: {width: 210},
+                            defaultType: 'textfield',
+                            items: [
+                                {
+                                    xtype: 'numberfield',
+                                    id: 'nameField',
+                                    fieldLabel: 'Phone Number'
+                                },
+                                {
+                                    xtype: 'sliderfield',
+                                    fieldLabel: 'Age'
+                                }
+                            ]
+                        },
+                        {
+                            xtype: 'htmleditor',
+                            autoScroll: true,
+                            id: 'bio',
+                            fieldLabel: 'Biography',
+                            height: 200,
+                            anchor: '98%'
+                        },
+						{
+							xtype: 'datefield',
+							fieldLabel: 'Date'
+						},
+						{
+							xtype: 'timefield',
+							fieldLabel: 'Time'
+						},
+						{
+							xtype: 'hidden',
+							fieldLabel: 'Secret'
+						}
+                    ],
+                    buttons:
+                        [
+                            {
+                                text: 'Reset',
+                                listeners: {
+                                    'click': function (btn, form) {
+										Ext.getCmp('testForm').form.reset();
+								}
+                                }
+                            },
+                            {
+								text: 'Submit',
+								listeners: {
+									'click': function (btn, form) {
+										Ext.Msg.alert('Alert', 'Hello World!');
+									}
+								}
+							},
+							{
+								text: 'Auto Fill',
+								listeners: {
+									'click': function (btn, form) {
+										Ext.getCmp('testForm').form.setValues([{id:'bio', value:'This is an example bio.'}]);
+									}
+								}
+							}
+                        ]
+                })
+            ;
+        });
+    </script>
+</head>
+<body>
+<div id="test"></div>
+</body>
+</html>

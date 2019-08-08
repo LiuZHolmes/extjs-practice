@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Form Auto Fill</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+        Ext.onReady(function () {
+            var reader = new Ext.data.JsonReader({}, [
+                {name: 'name', type: 'string'},
+                {name: 'age', type: 'int'},
+                {name: 'birthday', type: 'date', dateFormat: 'Y-m-dTH:i:s'},
+                {name: 'weight', type: 'float'}
+            ])
+            var form = new Ext.grid.GridPanel({
+                id: 'testForm',
+                renderTo: 'test',
+                defaultType: 'textfield',
+                labelAlign: 'center',
+                title: 'auto fill data in form',
+                labelWidth: 50,
+                frame: true,
+                width: 600,
+                store: new Ext.data.ArrayStore({
+                    id: 1,
+                    fields: [
+                        {name: 'name', type: 'string'},
+                        {name: 'age', type: 'int'},
+                        {name: 'birthday', type: 'date', dateFormat: 'Y-m-dTH:i:s'},
+                        {name: 'weight', type: 'float'}
+                    ]
+                }),
+                // reader: reader,
+                columns: [
+                    {
+                        name: 'name',
+                        header: 'Name',
+                        width: 160,
+                        dataIndex: 'name'
+                    },
+                    {
+                        name: 'age',
+                        header: 'Age',
+                        width: 160,
+                        dataIndex: 'age'
+                    },
+                    {
+                        name: 'birthday',
+                        header: 'Birthday',
+                        width: 160,
+                        dataIndex: 'birthday'
+                    },
+                    {
+                        name: 'weight',
+                        header: 'Weight',
+                        width: 160,
+                        dataIndex: 'weight'
+                    }
+                ],
+                buttons: [{
+                    text: 'Load',
+                    listeners: {
+                        'click': function (btn, e) {
+                            Ext.getCmp('testForm').store.loadData({url: './data/json_reader.txt'})
+                        }
+                    }
+                }]
+            })
+        })
+    </script>
+</head>
+<body>
+<div id="test"></div>
+</body>
+</html>
