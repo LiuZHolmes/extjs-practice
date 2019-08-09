@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Student Management System</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+        Ext.onReady(function () {
+            let storeId = 10
+            let clickId = 0
+            const add = function (text) {
+                let node = tree.getNodeById(clickId)
+                if (node && text) {
+                    if (node.text === 'School')
+                        node.appendChild(new Ext.tree.TreeNode({
+                            id: storeId++,
+                            text: text,
+                            leaf: false,
+                            expandable: true,
+                            expanded: true
+                        }))
+                    else if (!node.leaf) {
+                        node.appendChild(new Ext.tree.TreeNode({
+                            id: storeId++,
+                            text: text,
+                            leaf: true
+                        }))
+                    } else {
+                        node.parentNode.appendChild(new Ext.tree.TreeNode({
+                            id: storeId++,
+                            text: text,
+                            leaf: true
+                        }))
+                    }
+                } else if (!node) Ext.Msg.alert('Error', 'Please select a node')
+                else if (!text) Ext.Msg.alert('Error', 'Please input some words')
+            }
+            var menu = new Ext.menu.Menu({
+                items: [{
+                    id: 'AddNode',
+                    text: 'Add node'
+                }, {
+                    id: 'deleteNode',
+                    text: 'Delete node'
+                }, {
+                    id: 'showNodeInfo',
+                    text: 'Show node info'
+                }],
+                listeners: {
+                    itemclick: function (item) {
+                        var currentNode = item.parentMenu.contextNode
+                        switch (item.id) {
+                            case 'deleteNode':
+                                if (currentNode.parentNode) {
+                                    storeId--
+                                    currentNode.remove()
+                                }
+                                break
+                            case 'showNodeInfo':
+                                let msg = `Hello, I am ${currentNode.text}\n`
+                                if (currentNode.parentNode.text !== 'School') {
+                                    msg += `and my Class is ${currentNode.parentNode.text}`
+                                }
+                                Ext.Msg.alert('Node Info', msg)
+                                break
+                            case 'AddNode':
+                                clickId = currentNode.id
+                                Ext.MessageBox.show({
+                                    title: 'Add',
+                                    msg: 'Please enter your words:',
+                                    width: 300,
+                                    buttons: Ext.MessageBox.OKCANCEL,
+                                    multiline: true,
+                                    fn: (btn, text) => {
+                                        add(text)
+                                    }
+                                })
+                                break
+                        }
+                    }
+                }
+            })
+            var tree = new Ext.tree.TreePanel({
+                width: 200,
+                height: 300,
+                useArrows: true,
+                enableDD: true,
+                frame: true,
+                autoScroll: true,
+                loader: new Ext.tree.TreeLoader({
+                    dataUrl: './data/student.json',
+                    preload: true
+                }),
+                contextMenu: menu,
+                listeners: {
+                    contextmenu: function (node, e) {
+                        node.select()
+                        var treeContextMenu = node.getOwnerTree().contextMenu
+                        treeContextMenu.contextNode = node
+                        treeContextMenu.showAt(e.getXY())
+                    },
+                    click: function (node) {
+                        clickId = node.id
+                    }
+                },
+                root: new Ext.tree.AsyncTreeNode({text: 'School'})
+            })
+            tree.expandAll()
+            var treeEditor = new Ext.tree.TreeEditor(tree, {allowBlank: false}, {
+                listeners: {
+                    complete: function (editor, currVal, origVal) {
+                    }
+                }
+            })
+            var panel = new Ext.Panel({
+                layout: 'vbox',
+                layoutConfig: {
+                    align: 'stretch'
+                },
+                items: [tree, {
+                    xtype: 'textfield',
+                    id: 'addItem',
+                    emptyText: 'Add something here...'
+                }],
+                buttons: [{
+                    text: 'Add',
+                    listeners: {
+                        'click': function () {
+                            let text = Ext.getCmp('addItem').getValue()
+                            add(text)
+                        }
+                    }
+                }]
+            })
+            const win = new Ext.Window({
+                layout: 'fit',
+                width: 500,
+                height: 396,
+                closeAction: 'hide',
+                title: 'Student Management System',
+                plain: true,
+                items: panel
+            })
+            win.show()
+        })
+    </script>
+</head>
+<body>
+</body>
+</html>

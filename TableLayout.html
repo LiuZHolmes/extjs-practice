@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Form</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+        Ext.onReady(function () {
+            var table = new Ext.Panel({
+                title: 'Table Layout',
+                layout: 'table',
+                renderTo: 'test',
+                width: 300,
+                height: 200,
+                defaults: {
+                    // applied to each contained panel
+                    bodyStyle: 'padding:20px',
+                    width: 100,
+                    height: 100
+                },
+                layoutConfig: {
+                    tableAttrs: {
+                        style: {
+                            height: '100%',
+                            width: '100%'
+                        }
+                    },
+                    // The total column count must be specified here
+                    columns: 3
+                },
+                items: [{
+                    html: '<p>Cell A content</p>',
+                    height: 200,
+                    rowspan: 2
+                }, {
+                    html: '<p>Cell B content</p>',
+                    width: 200,
+                    colspan: 2
+                }, {
+                    html: '<p>Cell C content</p>',
+                    cellCls: 'highlight'
+                }, {
+                    html: '<p>Cell D content</p>'
+                }]
+            })
+
+        })
+    </script>
+</head>
+<body>
+<div id="test"></div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Form</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+        Ext.onReady(function () {
+            var viewport = new Ext.Viewport({
+                layout: 'anchor',
+                renderTo: 'test',
+                items: [
+                    {
+                        xtype: 'panel',
+                        anchor: '100% 50%',
+                        layout: 'absolute',
+                        items: [{
+                            title: 'panel 1',
+                            html: 'panel 1',
+                            x: 0,
+                            y: 0,
+                            anchor: '50% 50%'
+                        }, {
+                            title: 'panel 2',
+                            html: 'panel 2',
+                            x: 100,
+                            y: 100,
+                            anchor: '50% 75%'
+                        }]
+                    },
+                    {
+                        xtype: 'panel',
+                        anchor: '100% 50%',
+                        layout: 'form',
+                        items: [{
+                            title: 'panel 1',
+                            html: 'panel 1',
+                            x: 0,
+                            y: 0,
+                            anchor: '100% 50%'
+                        }, {
+                            title: 'panel 2',
+                            html: 'panel 2',
+                            x: 100,
+                            y: 100,
+                            anchor: '50% 50%'
+                        }]
+                    }
+                ]
+            })
+
+        })
+    </script>
+</head>
+<body>
+<div id="test"></div>
+</body>
+</html>

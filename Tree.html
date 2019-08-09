@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Tree</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+        Ext.onReady(function () {
+            var menu = new Ext.menu.Menu({
+                items: [{
+                    id: 'deleteNode',
+                    text: 'Delete Node'
+                }, {
+                    id: 'showNodeInfo',
+                    text: 'Show node info'
+                }],
+                listeners: {
+                    itemclick: function (item) {
+                        var currentNode = item.parentMenu.contextNode
+                        switch (item.id) {
+                            case 'deleteNode':
+                                if (currentNode.parentNode) {
+                                    currentNode.remove()
+                                }
+                                break
+                            case 'showNodeInfo':
+                                let msg = `Hello, here is ${currentNode.text}\n`
+                                if (currentNode.parentNode.text !== 'src') {
+                                    msg += `and my parent is ${currentNode.parentNode.text}`
+                                }
+                                Ext.Msg.alert('Node Info', msg)
+                                console.log(currentNode)
+                                break
+                        }
+                    }
+                }
+            })
+            var root = new Ext.tree.AsyncTreeNode({text: 'src'})
+            var root2 = new Ext.tree.AsyncTreeNode({text: 'src'})
+            var tree = new Ext.tree.TreePanel({
+                renderTo: 'test',
+                width: 200,
+                height: 300,
+                rootVisible: false,
+                useArrows: true,
+                enableDD: true,
+                frame: true,
+                loader: new Ext.tree.TreeLoader({
+                    dataUrl: './data/tree.json',
+                    preload: true
+                }),
+                contextMenu: menu,
+                listeners: {
+                    contextmenu: function (node, e) {
+                        node.select()
+                        var treeContextMenu = node.getOwnerTree().contextMenu
+                        treeContextMenu.contextNode = node
+                        treeContextMenu.showAt(e.getXY())
+                    }
+                    // click: function (node) {
+                    //     Ext.Msg.alert('Tree Event', 'you clicked node:' + node.text)
+                    // },
+                    // checkchange: function (node, checked) {
+                    //     Ext.Msg.alert('Tree Event', 'you ' + (checked ? 'checked' : 'unchecked') + ' node:' + node.text)
+                    // },
+                    // expandnode: function (node) {
+                    //     if (node.text !== 'src')
+                    //         Ext.Msg.alert('Tree Event', 'you expanded node:' + node.text)
+                    // },
+                    // collapsenode: function (node) {
+                    //     Ext.Msg.alert('Tree Event', 'you collapsed node:' + node.text)
+                    // }
+                },
+                root: root
+            })
+            var tree2 = new Ext.tree.TreePanel({
+                renderTo: 'test2',
+                width: 200,
+                height: 300,
+                rootVisible: false,
+                useArrows: true,
+                enableDD: true,
+                frame: true,
+                loader: new Ext.tree.TreeLoader({
+                    dataUrl: './data/tree.json',
+                    preload: true
+                }),
+                root: root2
+            })
+            tree.on('nodedrop', function(e) {
+                Ext.Msg.alert('Drag Event',`currently dragging node: ${e.dropNode.text} dropping into node: ${e.target.text}, dragging pattern is ${e.point}`);
+            });
+            root.expand()
+            root2.expand()
+            var treeEditor = new Ext.tree.TreeEditor(tree, {allowBlank: false}, {
+                listeners: {
+                    complete: function(editor, currVal, origVal) {
+                        console.log(editor)
+                        Ext.Msg.alert('Tree Editor', 'node text changed from ' + origVal + ' to ' + currVal);
+                    }
+                }
+            });
+        })
+    </script>
+    <style type="text/css">
+        .red {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="test"></div>
+<div id="test2"></div>
+</body>
+</html>

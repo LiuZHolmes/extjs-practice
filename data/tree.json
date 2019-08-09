@@ -1,0 +1,41 @@
+[
+  {
+    "text": "Fruits",
+    "checked": false,
+    "expanded": true,
+    "singleClickExpand": true,
+    "children": [
+      {
+        "text": "Apple",
+        "leaf": true,
+        "checked": true
+      },
+      {
+        "text": "Grapes",
+        "leaf": true,
+        "checked": true
+      },
+      {
+        "text": "Pear",
+        "leaf": true,
+        "checked": false
+      },
+      {
+        "text": "Strawberry",
+        "leaf": true,
+        "checked": false
+      },
+      {
+        "text": "Watermelon",
+        "leaf": true,
+        "checked": false
+      }
+    ]
+  },
+  {
+    "text": "Vegetables",
+    "expandable": true,
+    "children": [],
+    "singleClickExpand": true
+  }
+]
