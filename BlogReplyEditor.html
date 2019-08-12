@@ -15,25 +15,45 @@
             }
             const tpl = new Ext.XTemplate(
                 `<table border="1">
-                      <tr>
-                        <th>Month</th>
-                        <th>Savings</th>
-                      </tr>
-                      <tr>
-                        <td>January</td>
-                        <td>$100</td>
-                      </tr>
+                    <tpl for="rows">
+                    <tr>
+                        <tpl for="cols"><td>{number}</td></tpl>
+                    </tr>
+                    </tpl>
                 </table>`
             )
             const tablePreview = new Ext.Panel({
                 id: 'tablePreview',
                 title: 'TablePreview',
                 data: {},
-                height: 100
+                height: 100,
+                autoScroll: true
             })
             const insertTable = item => {
-                
-                tpl.overwrite(tablePreview.body)
+                let row = 0, col = 0
+                Ext.MessageBox.prompt('Alert', 'Please enter rows of table:', (btn, text) => {
+                    row = Number(text)
+                    Ext.MessageBox.prompt('Alert', 'Please enter columns of table:', (btn, text) => {
+                        col = Number(text)
+                        let rowsData = new Array(row), colsData = new Array(col)
+                        for (let i = 0;i < row; i++) {
+                            rowsData[i] = {
+                                number: i
+                            }
+                        }
+                        for (let i = 0;i < col; i++) {
+                            colsData[i] = {
+                                number: i
+                            }
+                        }
+                        var data = {
+                            rows: rowsData,
+                            cols: colsData
+                        }
+                        console.log(data)
+                        tpl.overwrite(tablePreview.body, data)
+                    })
+                })
             }
             const replying = () => {
                 const pbar = new Ext.ProgressBar({
