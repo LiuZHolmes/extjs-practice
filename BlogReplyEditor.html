@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Blog Reply Editor</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+        Ext.onReady(function () {
+            const reset = item => {
+                Ext.getCmp('replyText').reset()
+            }
+            const tpl = new Ext.XTemplate(
+                `<table border="1">
+                      <tr>
+                        <th>Month</th>
+                        <th>Savings</th>
+                      </tr>
+                      <tr>
+                        <td>January</td>
+                        <td>$100</td>
+                      </tr>
+                </table>`
+            )
+            const tablePreview = new Ext.Panel({
+                id: 'tablePreview',
+                title: 'TablePreview',
+                data: {},
+                height: 100
+            })
+            const insertTable = item => {
+                
+                tpl.overwrite(tablePreview.body)
+            }
+            const replying = () => {
+                const pbar = new Ext.ProgressBar({
+                    renderTo: 'pbar'
+                })
+                pbar.show()
+                pbar.wait({
+                    interval: 300,
+                    duration: 3000,
+                    text: 'Loading...',
+                    scope: this,
+                    fn: function () {
+                        pbar.hide()
+                        Ext.MessageBox.show({
+                            title: 'Message',
+                            msg: `Success`
+                        })
+                    }
+                })
+            }
+            const panel = new Ext.Panel({
+                layout: 'vbox',
+                layoutConfig: {
+                    align: 'stretch'
+                },
+                tbar: [{
+                    text: 'Edit',
+                    menu: [{
+                        text: 'Reset',
+                        handler: reset
+                    }]
+                }, {
+                    text: 'Insert',
+                    menu: [{
+                        text: 'Table',
+                        handler: insertTable
+                    }]
+                }],
+                items: [tablePreview, {
+                    xtype: 'textarea',
+                    id: 'replyText',
+                    height: 300,
+                    emptyText: 'Add something here...'
+                }],
+                buttons: [{
+                    id: 'reply',
+                    text: 'Reply',
+                    listeners: {
+                        'click': function () {
+                            if (Ext.isEmpty(Ext.getCmp('replyText').getValue()))
+                                Ext.MessageBox.show({
+                                    title: 'Error',
+                                    msg: `Please type something.`
+                                })
+                            else replying()
+                        }
+                    }
+                }]
+            })
+            const contextmenu = new Ext.menu.Menu({
+                items: [{
+                    text: 'Edit',
+                    menu: [{
+                        text: 'Reset',
+                        handler: reset
+                    }]
+                }, {
+                    text: 'Insert',
+                    menu: [{
+                        text: 'Table',
+                        handler: insertTable
+                    }]
+                }]
+            })
+            Ext.get(document).on('contextmenu', e => {
+                e.preventDefault()
+                contextmenu.showAt(e.getXY())
+            })
+
+            const win = new Ext.Window({
+                layout: 'fit',
+                width: 500,
+                height: 500,
+                closeAction: 'hide',
+                title: 'Blog Reply Editor',
+                plain: true,
+                items: panel
+            })
+            win.show()
+        })
+    </script>
+</head>
+<body>
+<div id="pbar"></div>
+</body>
+</html>

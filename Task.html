@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Task</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+        Ext.onReady(function () {
+            var updateClock = function(){
+                Ext.fly('clock').update(new Date().format('g:i:s.u A'));
+            }
+            var task = {
+                run: updateClock,
+                interval: 1 //0.001 second
+            }
+            var runner = new Ext.util.TaskRunner();
+            runner.start(task);
+
+// equivalent using TaskMgr
+            Ext.TaskMgr.start({
+                run: updateClock,
+                interval: 1000
+            });
+        })
+    </script>
+</head>
+<body>
+<div id="clock"></div>
+</body>
+</html>
