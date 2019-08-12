@@ -17,7 +17,7 @@
                 `<table border="1">
                     <tpl for="rows">
                     <tr>
-                        <tpl for="cols"><td>{number}</td></tpl>
+                        <tpl for="parent.cols"><td>row: {parent.number + 1} col: {number + 1}</td></tpl>
                     </tr>
                     </tpl>
                 </table>`
@@ -35,22 +35,13 @@
                     row = Number(text)
                     Ext.MessageBox.prompt('Alert', 'Please enter columns of table:', (btn, text) => {
                         col = Number(text)
-                        let rowsData = new Array(row), colsData = new Array(col)
-                        for (let i = 0;i < row; i++) {
-                            rowsData[i] = {
-                                number: i
-                            }
-                        }
-                        for (let i = 0;i < col; i++) {
-                            colsData[i] = {
-                                number: i
-                            }
-                        }
+                        let rowsData = new Array(row).fill(1), colsData = new Array(col).fill(1)
+                        rowsData = rowsData.map((x,index) => ({number: index}))
+                        colsData = colsData.map((x,index) => ({number: index}))
                         var data = {
                             rows: rowsData,
                             cols: colsData
                         }
-                        console.log(data)
                         tpl.overwrite(tablePreview.body, data)
                     })
                 })
