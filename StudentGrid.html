@@ -5,17 +5,24 @@
     <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
     <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
     <script type="text/javascript" src="../ext-all.js"></script>
+    <script type="text/javascript" src="../examples/ux/PagingMemoryProxy.js"></script>
     <script type="text/javascript">
         Ext.onReady(function () {
             const data = [
-                ['1', 'Alpha', 'Class A', 'Male', 16, 1],
-                ['2', 'Bravo', 'Class A', 'Male', 15, 2],
-                ['3', 'Charlie', 'Class B', 'Female', 17, 3],
-                ['4', 'Delta', 'Class B', 'Female', 18, 4],
-                ['5', 'Echo', 'Class C', 'Male', 14, 5]
+                ['1', 'Alpha', 'Class A', 0, 16, new Date()],
+                ['2', 'Bravo', 'Class A', 0, 15, new Date()],
+                ['3', 'Charlie', 'Class B', 1, 17, new Date()],
+                ['4', 'Delta', 'Class B', 1, 18, new Date()],
+                ['5', 'Echo', 'Class C', 0, 14, new Date()]
             ]
-            const store = new Ext.data.Store({
-                proxy: new Ext.data.MemoryProxy(data),
+            const sexComboData = [
+                ['0', 'Male'],
+                ['1', 'Female']
+            ]
+            const store = new Ext.data.GroupingStore({
+                proxy: new Ext.data.PagingMemoryProxy(data),
+                groupField: 'class',
+                sortInfo: {field: 'name', direction: 'ASC'},
                 reader: new Ext.data.ArrayReader({}, [
                     {name: 'avatar'},
                     {name: 'name'},
@@ -25,17 +32,24 @@
                     {name: 'birthday'}
                 ])
             })
-            store.load()
+            const Record = Ext.data.Record.create([
+                {name: 'avatar', type: 'string'},
+                {name: 'name', type: 'string'},
+                {name: 'class', type: 'string'},
+                {name: 'sex', type: 'string'},
+                {name: 'age', type: 'number'},
+                {name: 'birthday', type: 'date'}
+            ])
             const sm = new Ext.grid.CheckboxSelectionModel()
-            const renderAvatar = () => {
-                return `<img src='./images/user_male.png' />`
-            }
             const cm = new Ext.grid.ColumnModel([
                 new Ext.grid.RowNumberer(),
                 sm,
-                {header: 'Avatar', dataIndex: 'avatar', renderer: renderAvatar},
                 {
-                    header: 'Name', dataIndex: 'name',
+                    header: 'Avatar', dataIndex: 'avatar',
+                    renderer: () => `<img src='./images/user_male.png' />`
+                },
+                {
+                    header: 'Name', dataIndex: 'name', sortable: true,
                     editor: new Ext.grid.GridEditor(
                         new Ext.form.TextField({
                             allowBlank: false
@@ -43,24 +57,129 @@
                     )
                 },
                 {
-                    header: 'Class', dataIndex: 'class',
+                    header: 'Class', dataIndex: 'class', sortable: true,
                     editor: new Ext.grid.GridEditor(
                         new Ext.form.TextField({
                             allowBlank: false
                         })
                     )
                 },
-                {header: 'Sex', dataIndex: 'sex'},
-                {header: 'Age', dataIndex: 'age'},
-                {header: 'Birthday', dataIndex: 'birthday'}
+                {
+                    header: 'Sex', dataIndex: 'sex',
+                    editor: new Ext.grid.GridEditor(new Ext.form.ComboBox({
+                        store: new Ext.data.SimpleStore({
+                            fields: ['value', 'text'],
+                            data: sexComboData
+                        }),
+                        emptyText: '请选择',
+                        mode: 'local',
+                        triggerAction: 'all',
+                        valueField: 'value',
+                        displayField: 'text'
+                    })),
+                    renderer: value => sexComboData[value][1]
+                },
+                {
+                    header: 'Age', dataIndex: 'age',
+                    editor: new Ext.grid.GridEditor(new Ext.form.NumberField({
+                        allowBlank: false,
+                        allowNegative: false
+                    }))
+                },
+                {
+                    header: 'Birthday', dataIndex: 'birthday',
+                    editor: new Ext.grid.GridEditor(new Ext.form.DateField({
+                        format: 'Y-m-d'
+                    })),
+                    renderer: value => value.format('Y-m-d')
+                }
             ])
+            const adjustRowSequence = diff => {
+                const record = grid.getSelectionModel().getSelected()
+                const index = store.indexOf(record)
+                store.remove(record)
+                switch (diff) {
+                    case 'top':
+                        store.insert(0, record)
+                        break
+                    case 'last':
+                        store.insert(store.totalLength - 1, record)
+                        break
+                    default:
+                        store.insert(index + diff, record)
+                        break
+
+                }
+            }
+            const contextmenu = new Ext.menu.Menu({
+                id: 'contextMenu',
+                items: [{
+                    text: 'Up',
+                    handler: () => adjustRowSequence(-1)
+                }, {
+                    text: 'Down',
+                    handler: () => adjustRowSequence(1)
+                }, {
+                    text: 'Top',
+                    handler: () => adjustRowSequence('top')
+                }, {
+                    text: 'Last',
+                    handler: () => adjustRowSequence('last')
+                }]
+            })
             const grid = new Ext.grid.EditorGridPanel({
                 autoHeight: true,
                 renderTo: 'grid',
                 cm: cm,
                 sm: sm,
-                store: store
+                store: store,
+                view: new Ext.grid.GroupingView(),
+                listeners: {
+                    rowcontextmenu: (grid, rowIndex, e) => {
+                        e.preventDefault()
+                        grid.getSelectionModel().selectRow(rowIndex)
+                        contextmenu.showAt(e.getXY())
+                    }
+                },
+                tbar: new Ext.Toolbar([{
+                    text: 'Add',
+                    handler: function () {
+                        const record = grid.getSelectionModel().getSelected()
+                        const newItem = new Record({
+                            avatar: '',
+                            name: '',
+                            class: record.data.class,
+                            sex: 0,
+                            age: 0,
+                            birthday: new Date()
+                        })
+                        grid.stopEditing()
+                        store.insert(record ? store.indexOf(record) : 0, newItem)
+                        grid.startEditing(0, 0)
+                    }
+                }, '-', {
+                    text: 'Delete',
+                    handler: function () {
+                        const record = grid.getSelectionModel().getSelected()
+                        if (record)
+                            Ext.Msg.confirm('Warning', 'Are you sure?', function (btn) {
+                                if (btn == 'yes') {
+                                    const records = grid.getSelectionModel().getSelections()
+                                    records.forEach(x => store.remove(x))
+                                }
+                            })
+                    }
+                }, '-']),
+                bbar: new Ext.PagingToolbar({
+                    cls: 'rightPage',
+                    pageSize: 3,
+                    store: store,
+                    displayInfo: true,
+                    displayMsg: '显示第 {0} 条到 {1} 条记录，一共 {2} 条',
+                    emptyMsg: '没有记录'
+                })
             })
+            store.load()
         })
     </script>
 </head>
