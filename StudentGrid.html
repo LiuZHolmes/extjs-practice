@@ -1,0 +1,70 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gbk">
+    <title>StudentGrid</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script type="text/javascript">
+        Ext.onReady(function () {
+            const data = [
+                ['1', 'Alpha', 'Class A', 'Male', 16, 1],
+                ['2', 'Bravo', 'Class A', 'Male', 15, 2],
+                ['3', 'Charlie', 'Class B', 'Female', 17, 3],
+                ['4', 'Delta', 'Class B', 'Female', 18, 4],
+                ['5', 'Echo', 'Class C', 'Male', 14, 5]
+            ]
+            const store = new Ext.data.Store({
+                proxy: new Ext.data.MemoryProxy(data),
+                reader: new Ext.data.ArrayReader({}, [
+                    {name: 'avatar'},
+                    {name: 'name'},
+                    {name: 'class'},
+                    {name: 'sex'},
+                    {name: 'age'},
+                    {name: 'birthday'}
+                ])
+            })
+            store.load()
+            const sm = new Ext.grid.CheckboxSelectionModel()
+            const renderAvatar = () => {
+                return `<img src='./images/user_male.png' />`
+            }
+            const cm = new Ext.grid.ColumnModel([
+                new Ext.grid.RowNumberer(),
+                sm,
+                {header: 'Avatar', dataIndex: 'avatar', renderer: renderAvatar},
+                {
+                    header: 'Name', dataIndex: 'name',
+                    editor: new Ext.grid.GridEditor(
+                        new Ext.form.TextField({
+                            allowBlank: false
+                        })
+                    )
+                },
+                {
+                    header: 'Class', dataIndex: 'class',
+                    editor: new Ext.grid.GridEditor(
+                        new Ext.form.TextField({
+                            allowBlank: false
+                        })
+                    )
+                },
+                {header: 'Sex', dataIndex: 'sex'},
+                {header: 'Age', dataIndex: 'age'},
+                {header: 'Birthday', dataIndex: 'birthday'}
+            ])
+            const grid = new Ext.grid.EditorGridPanel({
+                autoHeight: true,
+                renderTo: 'grid',
+                cm: cm,
+                sm: sm,
+                store: store
+            })
+        })
+    </script>
+</head>
+<body>
+<div id="grid"></div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gbk">
+    <title>Grid</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script type="text/javascript">
+        Ext.onReady(function () {
+            /*
+                var cm = new Ext.grid.ColumnModel([
+                    {header:'编号',dataIndex:'id'},
+                    {header:'性别',dataIndex:'sex',renderer:function(value){
+                            if (value == 'male') {
+                                return "<span style='color:red;font-weight:bold;'>红男</span>";
+                            } else {
+                                return "<span style='color:green;font-weight:bold;'>绿女</span>";
+                            }
+                        }},
+                    {header:'名称',dataIndex:'name'},
+                    {header:'描述',dataIndex:'descn'}
+                ]);
+            var sm = new Ext.grid.CheckboxSelectionModel()
+
+            function renderSex(value) {
+                if (value == 'male') {
+                    return '<span style=\'color:red;font-weight:bold;\'>红男</span><img src=\'./images/user_male.png\' />'
+                } else {
+                    return '<span style=\'color:green;font-weight:bold;\'>绿女</span><img src=\'./images/user_female.png\' />'
+                }
+            }
+
+            function renderDescn(value, cellmeta, record, rowIndex, columnIndex, store) {
+                var str = '<input type=\'button\' value=\'查看详细信息\' onclick=\'alert("' +
+                    '这个单元格的值是：' + value + '\\n' +
+                    '这个单元格的配置是：{cellId:' + cellmeta.cellId + ',id:' + cellmeta.id + ',css:' + cellmeta.css + '}\\n' +
+                    '这个单元格对应行的record是：' + record + '，一行的数据都在里边\\n' +
+                    '这是第' + rowIndex + '行\\n' +
+                    '这是第' + columnIndex + '列\\n' +
+                    '这个表格对应的Ext.data.Store在这里：' + store + '，随便用吧。' +
+                    '")\'>'
+                return str
+            }
+
+            var cm = new Ext.grid.ColumnModel([
+                new Ext.grid.RowNumberer(),
+                sm,
+                {header: '编号', dataIndex: 'id'},
+                {header: '性别', dataIndex: 'sex', renderer: renderSex},
+                {
+                    header: '名称', dataIndex: 'name',
+                    editor: new Ext.grid.GridEditor(
+                        new Ext.form.TextField({
+                            allowBlank: false
+                        })
+                    )
+                },
+                {header: '描述', dataIndex: 'descn', renderer: renderDescn}
+            ])
+
+            var data = [
+                ['1', 'male', 'name1', 'descn1'],
+                ['2', 'female', 'name2', 'descn2'],
+                ['3', 'male', 'name3', 'descn3'],
+                ['4', 'female', 'name4', 'descn4'],
+                ['5', 'male', 'name5', 'descn5']
+            ]
+
+            var store = new Ext.data.Store({
+                proxy: new Ext.data.MemoryProxy(data),
+                reader: new Ext.data.ArrayReader({}, [
+                    {name: 'id'},
+                    {name: 'sex'},
+                    {name: 'name'},
+                    {name: 'descn'}
+                ])
+            })
+            store.load()
+
+            var grid = new Ext.grid.PropertyGrid({
+                autoHeight: true,
+                renderTo: 'grid',
+                store: store,
+                cm: cm,
+                sm: sm,
+                buttons: [{
+                    text: '删除第二行',
+                    listeners: {
+                        click: function () {
+                            store.remove(store.getAt(1))
+                            grid.view.refresh()
+                        }
+                    }
+                }]
+            })
+
+        })
+            */
+            var grid = new Ext.grid.PropertyGrid({
+                title: '属性表格',
+                id: 'proId',
+                autoHeight: true,
+                width: 300,
+                renderTo: 'grid',
+                source: {
+                    '名字': '不告诉你',
+                    '创建时间': new Date(Date.parse('12/15/2007')),
+                    '是否有效': false,
+                    '版本号': .01,
+                    '描述': '嗯，估计没啥可说的'
+                }
+            })
+            grid.on('beforeedit', function (e) {
+                e.cancel = true
+                return false
+            })
+
+        })
+    </script>
+</head>
+<body>
+<div id="grid"></div>
+</body>
+</html>
