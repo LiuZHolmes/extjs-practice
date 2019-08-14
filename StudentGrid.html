@@ -148,7 +148,7 @@
                         const newItem = new Record({
                             avatar: '',
                             name: '',
-                            class: record.data.class,
+                            class: record ? record.data.class : 'Class A',
                             sex: 0,
                             age: 0,
                             birthday: new Date()
@@ -179,7 +179,12 @@
                     emptyMsg: 'Ã»ÓÐ¼ÇÂ¼'
                 })
             })
-            store.load()
+            store.load({
+                params: {
+                    start: 0,
+                    limit: 3
+                }
+            })
         })
     </script>
 </head>
